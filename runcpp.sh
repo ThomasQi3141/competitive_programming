@@ -23,9 +23,10 @@ fi
 
 OUT="a.out"
 TMP_OUT="$(mktemp -t runcpp_out.XXXXXX)"
+TMP_ERR="$(mktemp -t runcpp_err.XXXXXX)"
 
 cleanup() {
-  rm -f "$TMP_OUT"
+  rm -f "$TMP_OUT" "$TMP_ERR"
 }
 trap cleanup EXIT
 
@@ -33,9 +34,17 @@ echo "----- COMPILING -----" >&2
 "$COMPILER" -std=gnu++23 -O2 "$CPP_FILE" -o "$OUT"
 
 echo "------ RUNNING ------" >&2
-# capture program stdout to temp file; keep stderr visible
-./"$OUT" "$@" > "$TMP_OUT"
+# capture stdout and stderr separately
+./"$OUT" "$@" > "$TMP_OUT" 2> "$TMP_ERR"
 
-echo "========== OUTPUT ==========" >&2
+echo "========== STDERR (cerr) ==========" >&2
+if [[ -s "$TMP_ERR" ]]; then
+  cat "$TMP_ERR"
+else
+  echo "(empty)" >&2
+fi
+echo "===================================" >&2
+
+echo "========== STDOUT (cout) ==========" >&2
 cat "$TMP_OUT"
-echo "============================" >&2
+echo "===================================" >&2

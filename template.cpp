@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-// g++-15 -std=gnu++23 -O2 x.cpp
+#define LOG(x) cerr << "[LOG] " << #x << " = " << (x) << "\n"
 
 void solve() {
 

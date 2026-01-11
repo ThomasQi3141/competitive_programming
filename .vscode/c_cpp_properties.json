@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "configurations": [
+    {
+      "name": "Mac (GCC 15)",
+      "includePath": ["${workspaceFolder}/**"],
+      "defines": [],
+      "compilerPath": "/opt/homebrew/bin/g++-15",
+      "cStandard": "c17",
+      "cppStandard": "gnu++23",
+      "intelliSenseMode": "macos-gcc-arm64",
+      "compilerArgs": ["-std=gnu++23"]
+    }
+  ]
+}
