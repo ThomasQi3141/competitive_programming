@@ -65,7 +65,10 @@ fi
 "$COMPILER" "${CXXFLAGS[@]}" "$CPP_FILE" -o "$OUT"
 
 echo "------ RUNNING ------" >&2
+set +e
 ./"$OUT" ${PROG_ARGS[@]+"${PROG_ARGS[@]}"} > "$TMP_OUT" 2> "$TMP_ERR"
+STATUS=$?
+set -e
 
 # Only show stderr section in debug mode
 if [[ $DEBUG -eq 1 ]]; then
