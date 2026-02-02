@@ -18,8 +18,23 @@ ostream& operator<<(ostream& os, const vector<T>& v) {
 }
 
 #define LOG(x) cerr << "[LOG] " << #x << " = " << (x) << "\n"
+
+template <class Map>
+void LOGMAP(const Map& mp, const string& name = "map") {
+    cerr << "[LOG] " << name << " (size=" << mp.size() << "): {";
+    bool first = true;
+    for (const auto& [k, v] : mp) {
+        if (!first) cerr << ", ";
+        first = false;
+        cerr << k << ": " << v;
+    }
+    cerr << "}\n";
+}
+
 #else
 #define LOG(x) ((void)0)
+template <class Map>
+void LOGMAP(const Map&, const string& = "map") { /* no-op */ }
 #endif
 using ll = long long;
 const ll INF = 1e9;
