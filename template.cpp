@@ -38,6 +38,7 @@ void LOGMAP(const Map&, const string& = "map") { /* no-op */ }
 #endif
 using ll = long long;
 const ll INF = 1e9;
+const ll MOD = 1e9 + 7;
 
 void solve() {
 
