@@ -48,13 +48,6 @@ ll ask(ll i, ll j) {
     return x;
 }
 
-bool isPow2(ll n) {
-    if (n <= 0) {
-        return false;
-    }
-    return !(n & (n - 1));
-}
-
 // returns the 2 numbers that makes up prod
 set<ll> getNums(ll prod, const set<ll>& vals) {
     for (ll x : vals) {
