@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
+using ll = long long;
 
 const int MAXN = 1e6; // replace w/ max of n
 // smallest prime factor
@@ -23,10 +24,10 @@ void sieve() {
 }
 
 // template for factoring
-vector<pair<int,int>> factor(int x) {
-    vector<pair<int,int>> f;
+vector<pair<ll, ll>> factor(ll x) {
+    vector<pair<ll, ll>> f;
     while (x > 1) {
-        int p = spf[x], cnt = 0;
+        ll p = spf[x], cnt = 0;
         while (x % p == 0) {
             x /= p;
             cnt++;
