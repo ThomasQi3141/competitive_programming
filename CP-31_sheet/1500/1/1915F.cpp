@@ -41,7 +41,25 @@ const ll INF = 1e9;
 const ll MOD = 1e9 + 7;
 
 void solve() {
-
+    ll n;
+    cin >> n;
+    ll start, end;
+    // 2 ppl will NEVER meet if only partial overlap (one will never catch up) 
+    // -> one interval must fully be in the other! -> count the number of intervals inside ts?
+    // keep a sortedlist of ends?
+    multiset<ll> ends;
+    vector<pair<ll, ll>> intervals;
+    for (int i = 0; i < n; i++) {
+        cin >> start >> end;
+        intervals.push_back({start, end});
+        ends.insert(end);
+    }
+    sort(intervals.begin(), intervals.end());
+    for (auto [start, end] : intervals) {
+        // all elements distinct anyways, can just remove all instances (1 instance) directly
+        ends.erase(end);
+        
+    }
 }
 
 int main() {
@@ -49,7 +67,7 @@ int main() {
     cin.tie(nullptr);
 
     int t = 1;
-    cin >> t; // REMEMBER TO COMMENT OUT IF NOT NEEDED
+    cin >> t;
     while (t--) {
         solve();
     }

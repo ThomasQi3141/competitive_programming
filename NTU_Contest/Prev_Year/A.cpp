@@ -41,7 +41,9 @@ const ll INF = 1e9;
 const ll MOD = 1e9 + 7;
 
 void solve() {
-
+    string s;
+    cin >> s;
+    cout << s[6] << endl;
 }
 
 int main() {
@@ -49,7 +51,7 @@ int main() {
     cin.tie(nullptr);
 
     int t = 1;
-    cin >> t; // REMEMBER TO COMMENT OUT IF NOT NEEDED
+    // cin >> t;
     while (t--) {
         solve();
     }

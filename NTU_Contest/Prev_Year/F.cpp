@@ -41,7 +41,18 @@ const ll INF = 1e9;
 const ll MOD = 1e9 + 7;
 
 void solve() {
-
+    ll n, k;
+    cin >> n >> k;
+    vector<ll> arr(n);
+    for (ll &x : arr) {
+        cin >> x;
+    }
+    sort(arr.begin(), arr.end());
+    ll res = INF;
+    for (int i = 0; i < arr.size() - k + 1; i++) {
+        res = min(res, arr[i + k - 1] - arr[i]);
+    } 
+    cout << res << endl;
 }
 
 int main() {
@@ -49,7 +60,7 @@ int main() {
     cin.tie(nullptr);
 
     int t = 1;
-    cin >> t; // REMEMBER TO COMMENT OUT IF NOT NEEDED
+    // cin >> t;
     while (t--) {
         solve();
     }
