@@ -41,8 +41,41 @@ using pll = pair<ll, ll>;
 const ll INF = 1e18;
 const ll MOD = 1e9 + 7;
 
-void solve() {
+ll exp(ll x, ll n) {
+    x %= MOD;
+    ll res = 1;
+    while (n > 0) {
+        if (n % 2 == 1) res = (res * x) % MOD;
+        x = (x * x) % MOD;
+        n /= 2;
+    }
+    return res;
+}
 
+void solve() {
+    string s;
+    cin >> s;
+    map<char, int> count;
+    for (char c: s) {
+        count[c] += 1;
+    }
+    ll n = s.size();
+    vector<ll> fact(n + 1);
+    fact[0] = 1;
+    for (int i = 1; i <= n; ++i) 
+        fact[i] = (i * fact[i - 1]) % MOD;
+    vector<ll> inv(n + 1);
+    inv[n] = exp(fact[n], MOD - 2);
+    for (int i = n - 1; i >= 0; --i) 
+        inv[i] = ((i + 1) * inv[i + 1]) % MOD;
+    // need to return n! / prod(c!) for each count
+    ll res = fact[n];
+    for (auto &[key, val] : count) {
+        res = (res * inv[val]) % MOD;
+    }
+    LOG(fact);
+    LOG(inv);
+    cout << res << endl;
 }
 
 int main() {
@@ -50,7 +83,7 @@ int main() {
     cin.tie(nullptr);
 
     int t = 1;
-    // cin >> t; // Keep in for codeforces
+    // cin >> t; // REMEMBER TO COMMENT OUT IF NOT NEEDED
     while (t--) {
         solve();
     }

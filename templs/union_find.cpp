@@ -2,35 +2,32 @@
 using namespace std;
 using ll = long long;
 
-ll uf_find(ll x, vector<ll> &parent) {
-    if (x != parent[x]) {
-        parent[x] = uf_find(parent[x], parent);
-    }
-    return parent[x];
-}
+class DSU {
+    private:
+        vector <ll> parent, rank;
+    public:
+        DSU(int n=2e5) : parent(n), rank(n, 1) {
+            for (int i = 0; i < n; ++i) parent[i] = i;
+        }
 
-void uf_union(ll x, ll y, vector<ll> &rank, vector<ll> &parent) {
-    ll xPar = uf_find(x, parent), yPar = uf_find(y, parent);
-    // check if same tree already
-    if (xPar == yPar) {
-        return;
-    }
-    if (rank[xPar] < rank[yPar]) {
-        rank[yPar] += rank[xPar];
-        parent[xPar] = yPar;
-    } else {
-        rank[xPar] += rank[yPar];
-        parent[yPar] = xPar;
-    }
-}
+        ll uf_find(ll x) {
+            if (x != parent[x]) {
+                parent[x] = uf_find(parent[x]);
+            }
+            return parent[x];
+        }
 
-
-void solve() {
-    ll n;
-    // UF data structures
-    vector<ll> rank(n + 1, 1);
-    vector<ll> parent(n + 1);
-    for (int i = 0; i < n + 1; i++) {
-        parent[i] = i;
-    }
-}
+        bool uf_union(ll x, ll y) {
+            ll xPar = uf_find(x), yPar = uf_find(y);
+            // check if same tree
+            if (xPar == yPar) return false;
+            // put the smaller one into the bigger one
+            if (rank[xPar] < rank[yPar]) {
+                parent[xPar] = yPar;
+                rank[yPar] += rank[xPar];
+            } else {
+                parent[yPar] = xPar;
+                rank[xPar] += rank[yPar];
+            }
+        }
+};

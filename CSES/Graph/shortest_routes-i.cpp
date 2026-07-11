@@ -42,7 +42,44 @@ const ll INF = 1e18;
 const ll MOD = 1e9 + 7;
 
 void solve() {
-
+    ll n, m;
+    cin >> n >> m;
+    // city -> weight, city
+    map<ll, vector<pll>> adj;
+    ll start, dest, curDist;
+    for (int i = 0; i < m; i++) {
+        cin >> start >> dest >> curDist;
+        adj[start].push_back({curDist, dest});
+    }
+    vector<ll> dist(n + 1, INF);
+    // creates a minH of pll
+    // type stored, container to store heap internally, how to compare items
+    priority_queue<pll, vector<pll>, greater<pll>> minH;
+    minH.push({0, 1});
+    while (!minH.empty()) {
+        auto [curDist, node] = minH.top();
+        LOG(curDist);
+        LOG(node);
+        minH.pop();
+        if (curDist >= dist[node]) {
+            continue;
+        }
+        dist[node] = curDist;
+        LOG(node);
+        LOG(dist);
+        for (auto [nbDist, nb] : adj[node]) {
+            LOG(curDist);
+            if (curDist + nbDist < dist[nb]) {
+                LOG(nb);
+                LOG(curDist + nbDist);
+                minH.push({curDist + nbDist, nb});
+            }
+        }
+    }
+    for (int i = 1; i <= n; i++) {
+        cout << dist[i] << " ";
+    }
+    cout << endl;
 }
 
 int main() {
@@ -50,7 +87,7 @@ int main() {
     cin.tie(nullptr);
 
     int t = 1;
-    // cin >> t; // Keep in for codeforces
+    // cin >> t; // REMEMBER TO COMMENT OUT IF NOT NEEDED
     while (t--) {
         solve();
     }
