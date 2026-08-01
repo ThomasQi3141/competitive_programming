@@ -4,7 +4,7 @@ from bisect import bisect_left, bisect_right
 from heapq import heappush, heappop, heapify
 from math import gcd, lcm, inf
 
-sys.setrecursionlimit(10 ** 8)
+# sys.setrecursionlimit(10 ** 8)
 
 input = sys.stdin.readline
 
@@ -22,10 +22,8 @@ def list_input():
 
 def solve():
     n = int_input()
-    a = list_input()
+    arr = list_input()
 
-    # write solution here
-    print(sum(a))
 
 
 if __name__ == "__main__":

@@ -39,6 +39,7 @@ ll exp(ll x, ll n) {
 }
 
 // binomial using modular inverse via FlT
+// NOTE: this only works for p > n!!!
 ll binomial_modinv (ll n, ll k) {
     // calculate n! % MOD
     vector<ll> fact(n + 1);
