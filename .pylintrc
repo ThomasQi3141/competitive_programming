@@ -1,0 +1,5 @@
+[MESSAGES CONTROL]
+disable=consider-using-enumerate,
+        invalid-name,
+        missing-module-docstring,
+        missing-function-docstring
