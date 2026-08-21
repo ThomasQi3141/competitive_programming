@@ -3,7 +3,7 @@ from collections import defaultdict, deque, Counter
 from bisect import bisect_left, bisect_right
 from heapq import heappush, heappop, heapify
 from math import gcd, lcm, inf, floor, ceil
-from itertools import accumulate
+# from itertools import accumulate
 # from functools import cache
 
 # sys.setrecursionlimit(10 ** 8)
@@ -23,9 +23,12 @@ def list_input():
 
 
 def solve():
-    n = int_input()
-    arr = list_input()
-
+    n, k = list_input()
+    # ck -> ceil(ck / n)
+    # ck >= n where c is as small as possible
+    # ck >= n
+    # print(ceil(ceil((n / k) * k) / n))
+    print(ceil((ceil(n / k) * k) / n))
 
 
 if __name__ == "__main__":

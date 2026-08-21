@@ -127,9 +127,125 @@ using pll = pair<ll, ll>;
 const ll INF = 1e18;
 const ll MOD = 1e9 + 7;
 
+struct StringHash {
+    static uint64_t splitmix64(uint64_t x) {
+        x += 0x9e3779b97f4a7c15ULL;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+        return x ^ (x >> 31);
+    }
+
+    size_t operator()(const string& s) const noexcept {
+        static const uint64_t FIXED_RANDOM =
+            chrono::steady_clock::now().time_since_epoch().count();
+        uint64_t h = FIXED_RANDOM;
+        size_t i = 0, n = s.size();
+        for (; i + 8 <= n; i += 8) {          // 8 bytes at a time
+            uint64_t chunk;
+            memcpy(&chunk, s.data() + i, 8);
+            h = splitmix64(h ^ chunk);
+        }
+        uint64_t chunk = 0;                    // leftover tail
+        for (size_t j = i; j < n; ++j)
+            chunk = (chunk << 8) | (unsigned char)s[j];
+        h = splitmix64(h ^ chunk);
+        return (size_t)splitmix64(h ^ (uint64_t)n);
+    }
+};
+
+struct LLHash {
+    static uint64_t splitmix64(uint64_t x) {
+        x += 0x9e3779b97f4a7c15ULL;
+        x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9ULL;
+        x = (x ^ (x >> 27)) * 0x94d049bb133111ebULL;
+        return x ^ (x >> 31);
+    }
+
+    size_t operator()(int64_t x) const noexcept {
+        static const uint64_t FIXED_RANDOM =
+            chrono::steady_clock::now().time_since_epoch().count();
+        return (size_t)splitmix64((uint64_t)x + FIXED_RANDOM);
+    }
+};
 
 void solve() {
-
+    ll n, m, k;
+    cin >> n >> m >> k;
+    vector<string> patterns(n + 1);
+    unordered_map<string, ll, StringHash> patternToIdx;
+    unordered_map<ll, unordered_set<ll, LLHash>, LLHash> adj; // patternIdx -> patternIdx
+    vector<ll> indegree(n + 1);
+    string x;
+    for (int i = 1; i <= n; ++i) {
+        cin >> x;
+        patterns[i] = x;
+        patternToIdx[x] = i;
+    }
+    vector<pair<string, ll>> strings(m); // string, patternIdx
+    for (auto &[s, x] : strings) {
+        cin >> s >> x;
+    }
+    // each string -> generate a list of patterns that can match this string
+    // 1. if p[mt_j] cannot match jth string -> return NO
+    // 2. otherwise, all the other patterns that CAN match this string must come AFTER this curr string
+    // do topsort -> check if works
+    for (auto &[s, idx] : strings) {
+        // check if the pattern at idx actually matches 
+        uint32_t mask = 0;
+        bool matches = false;
+        while (mask < (1 << (k + 1))) {
+            string curPattern = "";
+            for (int i = 0; i < k; ++i) {
+                if ((mask >> (k - 1 - i)) & 1) {
+                    curPattern += s[i];
+                } else {
+                    curPattern += '_';
+                }
+            }
+            LOG(curPattern);
+            if (curPattern == patterns[idx]) {
+                matches = true;
+            }
+            // make sure its not the same pattern
+            if (patternToIdx.contains(curPattern) && idx != patternToIdx[curPattern]) {
+                if (!adj[idx].contains(patternToIdx[curPattern])) indegree[patternToIdx[curPattern]]++;
+                adj[idx].insert(patternToIdx[curPattern]);
+            }
+            mask++;
+        }
+        if (!matches) {
+            LOG(s);
+            cout << "NO" << endl;
+            return;
+        }
+    }
+    LOGMAP(adj);
+    // top sort
+    deque<ll> queue;
+    for (int i = 1; i <= n; ++i) {
+        if (indegree[i] == 0) queue.emplace_back(i);
+    }
+    LOG(indegree);
+    vector<ll> res;
+    while (queue.size() > 0) {
+        ll cur = queue.front();
+        queue.pop_front();
+        res.emplace_back(cur);
+        // NOTE: set elements immutable, need const element, or copy iterator
+        for (const ll &nb : adj[cur]) {
+            indegree[nb]--;
+            if (indegree[nb] == 0) queue.emplace_back(nb);
+        }
+    }
+    LOG(res);
+    if (res.size() < n) {
+        cout << "NO" << endl;
+        return;
+    }
+    cout << "YES" << endl;
+    for (ll &x: res) {
+        cout << x << " ";
+    }
 }
 
 int main() {
