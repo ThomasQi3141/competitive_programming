@@ -129,14 +129,17 @@ const ll MOD = 1e9 + 7;
 
 // get height of tower this thing is in
 ll heightAt(ll x, vector<pll> &towers) {
-    auto it = lower_bound(towers.begin(), towers.end(), x, [](const pll &t, ll v) { return t.first < v; });
+    auto it = lower_bound(towers.begin(), towers.end(), make_pair(x, 0LL));
     return it->second;
 }
 
 // gets total number of cells from [0, x] with unlim height
 ll getCells(ll x, const vector<pll> &towers, const vector<pll> &prefix) {
-    auto it = upper_bound(prefix.begin(), prefix.end(), x, [](ll v, const pll &t) { return v < t.first; });
+    // NOTE: uppper_bound - 1 method to get the last thing that's <= x
+    // find first thing that's > x -> -1 to get last thing <= x
+    auto it = upper_bound(prefix.begin(), prefix.end(), make_pair(x, 0LL));
     // towers[0].first == 1 <= x, k >= 0
+    // k = index of last tower with idx <= x
     ll k = it - prefix.begin() - 1;
     ll res = prefix[k].second;
     // if extra portion, add on
