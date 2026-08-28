@@ -14,6 +14,15 @@ input = sys.stdin.readline
 def int_input():
     return int(input())
 
+
+def string_input():
+    return input().strip()
+
+
+def strings_input():
+    return input().split()
+
+
 def map_input():
     return map(int, input().split())
 
@@ -27,9 +36,8 @@ def solve():
     arr = list_input()
 
 
-
 if __name__ == "__main__":
     t = 1
-    t = int_input() # REMEMBER TO COMMENT OUT IF NOT NEEDED
+    t = int_input()  # REMEMBER TO COMMENT OUT IF NOT NEEDED
     for _ in range(t):
         solve()
