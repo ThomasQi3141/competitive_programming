@@ -149,38 +149,27 @@ void solve() {
     // res = min(res, n - length)
     // process in increasing order -> dp[x] = length of longest sequence ending in x
     ll n; cin >> n;
-    map<ll, ll> cnt;
-    ll x;
-    for (int i = 0; i < n; ++i) {
+    vector<ll> a(n);
+    ll maxVal = 0;
+    for (ll &x : a) {
         cin >> x;
-        cnt[x]++;
+        maxVal = max(maxVal, x);
     }
-    ll res = n;
+    vector<ll> cnt(maxVal + 1), dp(maxVal + 1);
+    for (ll &x : a) cnt[x]++;
     // iterates through cnt in increasing key order
     // cnt = max length of longest sequence ending in x
-    for (auto &[key, val] : cnt) {
-        // special case for 1
-        if (key == 1) {
-            res = min(res, n - val);
-            continue;
+    ll res = n;
+    // a lot slower if we do the regular sqrt(n) method
+    // -> O(m log m) this way! -> propogating to each multiple
+    for (int i = 1; i <= maxVal; ++i) {
+        // now, dp[i] = longest seq with factors of this
+        dp[i] += cnt[i]; // all instances of i can extend the current sequence
+        for (int j = 2 * i; j <= maxVal; j += i) {
+            // all multiples of this can have this appended before them
+            dp[j] = max(dp[j], dp[i]);
         }
-        // NOTE: val actually binds to cnt[key] since its a ref -> modifying val = modifying cnt[key]
-        // NOTE: modifying values while iterating is perfectly safe
-        ll tmpVal = val;
-        // find the factor with the LONGEST sequence
-        for (int j = 1; j * j <= key; ++j) {
-            if (key % j == 0) {
-                if (j != 1 && cnt.contains(key / j)) {
-                    val = max(val, tmpVal + cnt[key / j]);
-                }
-                if (j != key / j && cnt.contains(j)) {
-                    val = max(val, tmpVal + cnt[j]);
-                }
-            }
-        }
-        LOG(key);
-        LOG(val);
-        res = min(res, n - val);
+        res = min(res, n - dp[i]);
     }
     cout << res << endl;
 }
