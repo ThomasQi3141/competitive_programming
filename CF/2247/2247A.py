@@ -32,9 +32,30 @@ def list_input():
 
 
 def solve():
-    pass
-
-
+    n = int_input()
+    arr = list_input()
+    if n % 2 == 1:
+        print("NO")
+        return
+    cnt = Counter(arr)
+    if -1 not in cnt:
+        cnt[-1] = 0
+    if 1 not in cnt:
+        cnt[1] = 0
+    # swapping (-1, +1) doesn't matter, need to swap 2 adj
+    minKey, maxKey = min(cnt, key=lambda x : cnt[x]), max(cnt, key=lambda x : cnt[x])
+    if cnt[minKey] == cnt[maxKey]:
+        print("YES")
+        return
+    for i in range(n - 1):
+        if arr[i] == arr[i + 1] and arr[i] == maxKey:
+            cnt[maxKey] -= 2
+            cnt[minKey] += 2
+        if cnt[minKey] == cnt[maxKey]:
+            print("YES")
+            return
+    print("NO")
+        
 if __name__ == "__main__":
     t = 1
     t = int_input()  # REMEMBER TO COMMENT OUT IF NOT NEEDED

@@ -32,8 +32,12 @@ def list_input():
 
 
 def solve():
-    pass
-
+    n, q = list_input()
+    a = list_input()
+    # forall digits > MSB of k, a[i] ==  b[i]
+    s = sorted(a)
+    
+    # k = sum(differing bits)
 
 if __name__ == "__main__":
     t = 1
