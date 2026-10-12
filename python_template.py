@@ -6,7 +6,7 @@ from math import gcd, lcm, inf, floor, ceil
 from itertools import accumulate
 # from functools import cache
 
-# sys.setrecursionlimit(10 ** 8)
+# sys.setrecursionlimit(10 ** 6)
 
 input = sys.stdin.readline
 
