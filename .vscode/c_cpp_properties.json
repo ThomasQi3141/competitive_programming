@@ -3,8 +3,11 @@
   "configurations": [
     {
       "name": "Mac (GCC 15)",
-      "includePath": ["${workspaceFolder}/**"],
-      "defines": [],
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${env:HOME}/Documents/GitHub/competitive_programming"
+      ],
+      "defines": ["LOCAL"],
       "compilerPath": "/opt/homebrew/bin/g++-15",
       "cStandard": "c17",
       "cppStandard": "gnu++23",
